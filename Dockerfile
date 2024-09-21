@@ -7,7 +7,8 @@ WORKDIR /app
 # Copier les fichiers nécessaires
 COPY requirements.txt ./
 COPY . .
-
+# Ajoute cette ligne pour copier le fichier CSV
+COPY donnes.csv /app/donnes.csv
 # Installer les dépendances
 RUN pip install --no-cache-dir -r requirements.txt
 

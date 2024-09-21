@@ -10,8 +10,10 @@ st.set_page_config(page_title="Tableau de Bord Professionnel", page_icon=":bar_c
 
 # Charger les données
 @st.cache_data
+
 def load_data():
-    return pd.read_csv("C:/Users/nosty/Desktop/PROJET/donnes.csv", encoding="ISO-8859-1", low_memory=False)
+    return pd.read_csv("donnes.csv", encoding="ISO-8859-1", low_memory=False)
+
 
 df = load_data()
 
