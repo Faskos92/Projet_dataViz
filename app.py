@@ -23,8 +23,9 @@ def load_data():
         raise FileNotFoundError("Le fichier 'donnes.csv' n'a pas été trouvé après le téléchargement.")
 
     # Lire le fichier CSV
-    return pd.read_csv("donnes.csv", encoding="ISO-8859-1", low_memory=False, nrows=10000)
+    return pd.read_csv("donnes.csv", encoding="ISO-8859-1", low_memory=False, nrows=2000000)
 df = load_data()
+
 
 # Appliquer des styles CSS personnalisés
 st.markdown("""<style>
