@@ -184,7 +184,7 @@ def plot_montant_total_pret(filtered_df):
 
 def plot_correlation_matrix(df):
     st.subheader("Matrice de corrélation")
-    correlation_matrix = df.corr()
+    correlation_matrix = df.corr(numeric_only=True)
     fig = px.imshow(correlation_matrix, text_auto=True, aspect="auto", color_continuous_scale='RdBu')
     fig.update_layout(title="Matrice de corrélation entre les variables", template='plotly_white', font=dict(size=15))
     st.plotly_chart(fig, use_container_width=True)

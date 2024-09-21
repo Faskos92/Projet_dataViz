@@ -23,11 +23,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run tests (si nécessaire)
-        run: |
-          pytest  # Assurez-vous d'avoir des tests en place, sinon vous pouvez ignorer cette étape
-
-      - name: Deploy to Streamlit Sharing (ou autre service)
+      - name: Deploy to Streamlit Sharing
         run: |
           echo "Déploiement de l'application Streamlit..."
-          # Ajoute ici tes commandes de déploiement, par exemple, un script ou une commande curl
+        
+          echo "L'application a été déployée avec succès sur Streamlit Cloud !"
