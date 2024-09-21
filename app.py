@@ -175,12 +175,17 @@ def plot_montant_pret_zero(filtered_df):
     st.plotly_chart(fig, use_container_width=True)
 
 def plot_montant_total_pret(filtered_df):
-    st.subheader('Montant total des prêts par région')
-    total_pret_region = filtered_df.groupby('region')['vtpr'].sum()
-    fig = px.bar(x=total_pret_region.index, y=total_pret_region.values, text=total_pret_region.values, 
-                 labels={'x': 'Région', 'y': 'Montant total'}, color=total_pret_region.index)
-    fig.update_layout(title="Montant total des prêts par région", template='plotly_white', font=dict(size=15))
+    st.subheader('Évolution annuelle des prêts par région')
+    total_pret_region = filtered_df.groupby(['an', 'region'])['vtpr'].sum().reset_index()
+
+    # Création du graphique en ligne
+    fig = px.line(total_pret_region, x='an', y='vtpr', color='region', 
+                  labels={'an': 'Année', 'vtpr': 'Montant total'},
+                  title='Évolution annuelle des prêts par région')
+    fig.update_layout(template='plotly_white', font=dict(size=15))
+    
     st.plotly_chart(fig, use_container_width=True)
+
 
 def plot_correlation_matrix(df):
     st.subheader("Matrice de corrélation")
