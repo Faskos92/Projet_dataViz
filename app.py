@@ -1,25 +1,24 @@
-######## PROJET DE STREAMLIT #######
 # IMPORT DE BIBLIOTHEQUE NECESSAIRE 
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 from datetime import datetime
+import gdown  # Ajoutez cette ligne pour importer gdown
 
 # PAGE STREAMLIT 
 st.set_page_config(page_title="Tableau de Bord Professionnel", page_icon=":bar_chart:", layout="wide")
 
 # Charger les données
 @st.cache_data
-
 def load_data():
+    # URL pour télécharger le fichier depuis Google Drive
+    url = 'https://drive.google.com/uc?export=download&id=1jw_6cmV_jOSR-1HnfKNAlj-i-1Ni3ujz'
+    gdown.download(url, 'donnes.csv', quiet=False)  # Télécharger le fichier
     return pd.read_csv("donnes.csv", encoding="ISO-8859-1", low_memory=False)
-
-
 df = load_data()
 
 # Appliquer des styles CSS personnalisés
-st.markdown("""
-    <style>
+st.markdown("""<style>
     .main {
         background-color: #f5f5f5;  /* Arrière-plan clair pour les pages */
     }
@@ -168,50 +167,27 @@ def plot_montant_pret_zero(filtered_df):
 
 def plot_montant_total_pret(filtered_df):
     st.subheader('Montant total des prêts par région')
-    total_pret_region = filtered_df.groupby(['an', 'region'])['vtpr'].sum().reset_index()
-    
-    fig = px.line(total_pret_region, x='an', y='vtpr', color='region', 
-                  labels={'vtpr': 'Montant total des prêts', 'an': 'Année'},
-                  title="Montant total des prêts annuels par région")
-    fig.update_layout(template='plotly_white', font=dict(size=15))
+    total_pret_region = filtered_df.groupby('region')['vtpr'].sum()
+    fig = px.bar(x=total_pret_region.index, y=total_pret_region.values, text=total_pret_region.values, 
+                 labels={'x': 'Région', 'y': 'Montant total'}, color=total_pret_region.index)
+    fig.update_layout(title="Montant total des prêts par région", template='plotly_white', font=dict(size=15))
     st.plotly_chart(fig, use_container_width=True)
 
 def plot_correlation_matrix(df):
     st.subheader("Matrice de corrélation")
-    corr = df.corr(numeric_only=True)
-    fig = px.imshow(corr, text_auto=True, aspect="auto", title="Matrice de corrélation des variables")
-    fig.update_layout(template='plotly_white', font=dict(size=15))
+    correlation_matrix = df.corr()
+    fig = px.imshow(correlation_matrix, text_auto=True, aspect="auto", color_continuous_scale='RdBu')
+    fig.update_layout(title="Matrice de corrélation entre les variables", template='plotly_white', font=dict(size=15))
     st.plotly_chart(fig, use_container_width=True)
 
-# BARRE LATÉRALE ET NAVIGATION
-st.sidebar.title("Navigation")
-page = st.sidebar.radio("Sélectionnez une page", ["Statistiques descriptives", "Visualisations"])
+# MENU DE NAVIGATION
+pages = {
+    "Accueil": page1,
+    "Visualisations": page2,
+}
 
-if page == "Statistiques descriptives":
-    page1()
-elif page == "Visualisations":
-    page2()
+# Sélectionnez la page
+selected_page = st.sidebar.selectbox("Choisissez une page", options=list(pages.keys()))
 
-# Affichage de l'heure actuelle dans la barre latérale
-st.sidebar.write(f"Heure actuelle : {datetime.now().strftime('%H:%M:%S')}")
-
-# Personnalisation des widgets de la barre latérale
-st.sidebar.title("Options supplémentaires")
-if st.sidebar.checkbox("Afficher/Cacher"):
-    st.sidebar.text('Affichage du widget')
-
-status = st.sidebar.radio("Statut", ['Activer', 'Désactiver'])
-if status == 'Activer':
-    st.sidebar.success("Vous êtes activé")
-else:
-    st.sidebar.warning("Désactivé")
-
-occupation = st.sidebar.selectbox("Occupation", ['Banquier', 'Data engineer', 'Étudiant'])
-st.sidebar.write(f'Vous avez sélectionné : {occupation}')
-
-location = st.sidebar.multiselect("Lieu de travail", ['Lille', 'Marseille', 'Paris', 'Lyon'])
-if location:
-    st.sidebar.write(f'Vous travaillez à : {", ".join(location)}')
-
-# Footer
-st.markdown("<div style='text-align: center;'>© 2024, Tous droits réservés.</div>", unsafe_allow_html=True)
+# Affichez la page sélectionnée
+pages[selected_page]()
