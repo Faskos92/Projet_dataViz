@@ -4,6 +4,7 @@ import pandas as pd
 import plotly.express as px
 from datetime import datetime
 import gdown  # Ajoutez cette ligne pour importer gdown
+import os
 
 # PAGE STREAMLIT 
 st.set_page_config(page_title="Tableau de Bord Professionnel", page_icon=":bar_chart:", layout="wide")
@@ -13,7 +14,15 @@ st.set_page_config(page_title="Tableau de Bord Professionnel", page_icon=":bar_c
 def load_data():
     # URL pour télécharger le fichier depuis Google Drive
     url = 'https://drive.google.com/uc?export=download&id=1jw_6cmV_jOSR-1HnfKNAlj-i-1Ni3ujz'
-    gdown.download(url, 'donnes.csv', quiet=False)  # Télécharger le fichier
+    
+    # Télécharger le fichier
+    gdown.download(url, 'donnes.csv', quiet=False)
+
+    # Vérifiez si le fichier a été téléchargé
+    if not os.path.exists('donnes.csv'):
+        raise FileNotFoundError("Le fichier 'donnes.csv' n'a pas été trouvé après le téléchargement.")
+
+    # Lire le fichier CSV
     return pd.read_csv("donnes.csv", encoding="ISO-8859-1", low_memory=False)
 df = load_data()
 
