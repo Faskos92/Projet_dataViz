@@ -1,0 +1,33 @@
+name: CI/CD for Streamlit App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests (si nécessaire)
+        run: |
+          pytest  # Assurez-vous d'avoir des tests en place, sinon vous pouvez ignorer cette étape
+
+      - name: Deploy to Streamlit Sharing (ou autre service)
+        run: |
+          echo "Déploiement de l'application Streamlit..."
+          # Ajoute ici tes commandes de déploiement, par exemple, un script ou une commande curl

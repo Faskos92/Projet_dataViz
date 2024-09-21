@@ -1,0 +1,7 @@
+Name:Streamlit, version 1.32.0
+Name:pandas Version: 2.2.2
+Name:plotly Version: 5.9.0
+Name:cufflinks Version: 0.17.3
+Name:seaborn Version: 0.12.2
+Name:matplotlib Version: 3.8.0
+Name:numpy Version: 1.26.4
