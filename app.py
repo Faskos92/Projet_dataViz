@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from datetime import datetime
-import gdown  # Ajoutez cette ligne pour importer gdown
+import gdown  
 import os
 
 # PAGE STREAMLIT 
@@ -66,7 +66,7 @@ def page1():
     # Afficher le nom
     st.markdown("<div class='author'>Réalisé par Coulibaly Kiyali</div>", unsafe_allow_html=True)
 
-    # Afficher l'heure actuelle avec un meilleur design
+    # Afficher l'heure actuelle 
     current_time = datetime.now().strftime('%H:%M:%S')
     st.markdown(f"<div class='author'>Il est exactement : {current_time}</div>", unsafe_allow_html=True)
 
@@ -121,12 +121,12 @@ def page1():
 def page2():
     st.markdown("<div class='title-header'>Visualisations</div>", unsafe_allow_html=True)
 
-    # Ajouter des graphiques avec filtres
+    # Ajout des graphiques avec filtres
     st.markdown("<div class='title-header'>Sélectionnez vos indicateurs</div>", unsafe_allow_html=True)
     selected_years = st.multiselect("Sélectionnez les années pour les graphiques", df['an'].unique())
     selected_region = st.multiselect("Sélectionnez les régions pour les graphiques", df['region'].unique())
     
-    # Choisir le type de graphique à afficher
+    # Choix du type de graphique à afficher
     graphique_options = [
         'Évolution des prix au m²', 
         'Évolution du taux d\'intérêt nominal', 
@@ -149,7 +149,7 @@ def page2():
         elif selected_graphique == 'Montant total des prêts par région':  # Nouvelle option traitée
             plot_montant_total_pret(filtered_df)
 
-    # Afficher la matrice de corrélation sans filtre
+    # Matrice de corrélation sans filtre
     plot_correlation_matrix(df)  
 
 # STYLE PROFESSIONNEL POUR LES VISUALISATIONS
